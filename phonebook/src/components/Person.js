@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Person({key, name, number}) {
+function Person({name, number}) {
     return (
         <div>
-            <p key={key}>{name} {number}</p>
+            <p>{name} {number}</p>
         </div>
     )
 }
