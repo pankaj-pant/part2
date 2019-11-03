@@ -6,32 +6,57 @@ import './App.css';
 function App() {
   const [countries, setCountries] = useState([])
   const [filtered, setFiltered] = useState('')
+  const [weather, setWeather] = useState(null)
+
 
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
         setCountries(response.data)
+        console.log('Inside useEffect')
       })
   }, [])
 
+  
+  const fetchData = async () => {
+    const result = await axios(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=5ea4a910ca431288ef44af3146fd1866`,
+      );
+      const weatherCondition = await result.data;
+      setWeather(weatherCondition);
+      console.log('Inside fetchData')
+  };
+    
+
   const handleChange = (event) => {
     setFiltered(event.target.value)
+    console.log('Inside handleChange')
   }
 
   const display = countries.filter(c => c.name.toString().toLowerCase().includes(filtered.toString().toLowerCase()) === true)
+  console.log(display);
+  
 
   let text;
+  let city;
+  console.log(city);
   if(filtered === "") {
     text = <p>Search for country</p>
   } else if (display.length > 10) {
     text = <p>Too many matches</p>
-  } else if (display.length > 1) {
-    text = display.map(d => <p key={d.alpha3Code}>{d.name}</p>)
+  } else if (display.length > 1) {      
+    text = display.map(d => 
+      <p key={d.alpha3Code}>
+        {d.name}
+      </p>)
   } else {
+    city = display[0].capital;
+    console.log(city);
     text = display.map(d => 
       <div key={d.alpha3Code}>
         <h2>{d.name}</h2>
+        <h2>Var city {city}</h2>
         <p>capital {d.capital}</p>
         <p>population {d.population}</p>
         <h2>languages</h2>
@@ -39,19 +64,15 @@ function App() {
           {d.languages.map(l => <li key={l.name}>{l.name}</li>)}
         </ul>
         <img src={d.flag} height='200px' width='400px' />
-      </div>)
+      </div>
+      )
+      fetchData();
   }
 
   return (
     <div className="App">
       find countries <input type="text" value={filtered} onChange={handleChange}/>
-{/*       {filtered == "" ? <p>Search for country</p> : (display.length > 10 ? <p>Too many matches</p> : display.map(d => <p key={d.alpha3Code}>{d.name}</p>))} */}
-  {text}
-      
-      
-    
-
-      
+      {text}
     </div>
   );
 }
