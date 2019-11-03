@@ -14,7 +14,6 @@ function App() {
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
         setCountries(response.data)
-        console.log('Inside useEffect')
       })
   }, [])
 
@@ -31,16 +30,14 @@ function App() {
 
   const handleChange = (event) => {
     setFiltered(event.target.value)
-    console.log('Inside handleChange')
   }
 
   const display = countries.filter(c => c.name.toString().toLowerCase().includes(filtered.toString().toLowerCase()) === true)
-  console.log(display);
+
   
 
   let text;
   let city;
-  console.log(city);
   if(filtered === "") {
     text = <p>Search for country</p>
   } else if (display.length > 10) {
@@ -52,11 +49,9 @@ function App() {
       </p>)
   } else {
     city = display[0].capital;
-    console.log(city);
     text = display.map(d => 
       <div key={d.alpha3Code}>
         <h2>{d.name}</h2>
-        <h2>Var city {city}</h2>
         <p>capital {d.capital}</p>
         <p>population {d.population}</p>
         <h2>languages</h2>
@@ -66,7 +61,7 @@ function App() {
         <img src={d.flag} height='200px' width='400px' />
       </div>
       )
-      fetchData();
+      
   }
 
   return (
