@@ -1,9 +1,14 @@
 import React from 'react';
 
-function Person({name, number}) {
+function Person({id, name, number, deletePerson}) {
     return (
         <div>
-            <p>{name} {number}</p>
+            <p>
+                {name} {' '}
+                {number} {' '}
+                <button onClick={() => deletePerson(id)}>delete</button>
+            </p>
+            
         </div>
     )
 }

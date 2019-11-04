@@ -1,34 +1,24 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
+      "name": "John Jones",
+      "number": "123456",
       "id": 1
     },
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
+      "name": "Dennis Menace",
+      "number": "4567889",
       "id": 2
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
+      "name": "Tim Burton",
+      "number": "0927312",
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
+      "name": "Goldy Locks",
+      "number": "773247",
       "id": 4
-    },
-    {
-      "name": "adam",
-      "number": "1233123",
-      "id": 5
-    },
-    {
-      "name": "tom",
-      "number": "12",
-      "id": 6
     }
   ]
 }
