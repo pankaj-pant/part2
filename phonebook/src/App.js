@@ -41,12 +41,16 @@ const App = () => {
   }
 
   const deletePerson = (id) => {
-    listService
-      .deletePerson(id)
-      .then(refreshPersons => {
-        setPersons(persons.filter(p => p.id !== id)
-        );
-      })
+    let confirmDialogue = window.confirm(`Delete user?`);
+    if (confirmDialogue === true ) {
+      listService
+        .deletePerson(id)
+        .then(refreshPersons => {
+          setPersons(persons.filter(p => p.id !== id)
+          );
+        })
+    }
+    
   }
 
   return (
