@@ -6,7 +6,7 @@ function Person({id, name, number, deletePerson}) {
             <p>
                 {name} {' '}
                 {number} {' '}
-                <button onClick={() => deletePerson(id)}>delete</button>
+                <button onClick={() => deletePerson(id, name)}>delete</button>
             </p>
             
         </div>
