@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import listService from './services/list'
+import './App.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     listService
@@ -22,6 +24,18 @@ const App = () => {
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value);
+  }
+
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+
+    return (
+      <div className="notification">
+        {message}
+      </div>
+    )
   }
 
   const submit = (event) => {
@@ -41,6 +55,12 @@ const App = () => {
             console.log(returnedPerson)
             setPersons(persons.map(p => p.id !== id ? p : returnedPerson))
           })
+        setNotification(
+          `Updated ${newName}`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
       }
     } else {
       listService
@@ -50,7 +70,14 @@ const App = () => {
           setNewName("");
           setNewNumber("");
         })
+      setNotification(
+        `Added ${newName}`
+      )
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
+
   }
 
   const deletePerson = (id, name) => {
@@ -68,6 +95,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <h2>add a new contact</h2>
       <PersonForm
         submit={submit}
@@ -78,6 +106,7 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <Persons persons={persons} deletePerson={deletePerson} />
+
     </div>
   )
 
