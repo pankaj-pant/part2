@@ -9,6 +9,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [notification, setNotification] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     listService
@@ -38,6 +39,18 @@ const App = () => {
     )
   }
 
+  const Error = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+
+    return (
+      <div className="error">
+        {message}
+      </div>
+    )
+  }
+
   const submit = (event) => {
     event.preventDefault();
     const personObject = { name: newName, number: newNumber }
@@ -52,7 +65,6 @@ const App = () => {
         listService
           .update(id, personObject)
           .then(returnedPerson => {
-            console.log(returnedPerson)
             setPersons(persons.map(p => p.id !== id ? p : returnedPerson))
           })
         setNotification(
@@ -86,8 +98,22 @@ const App = () => {
       listService
         .deletePerson(id)
         .then(refreshPersons => {
-          setPersons(persons.filter(p => p.id !== id)
-          );
+          setPersons(persons.filter(p => p.id !== id))
+          setNotification(
+            `${name} succesfully deleted`
+          )
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setErrorMessage(
+            `Information of '${name}' has already been removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(p => p.id !== id))
         })
     }
   }
@@ -95,6 +121,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Error message={errorMessage} />
       <Notification message={notification} />
       <h2>add a new contact</h2>
       <PersonForm
