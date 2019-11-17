@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import listService from './services/list'
+import FilterModule from './components/FilterModule'
 import './App.css'
 
 const App = () => {
@@ -10,6 +11,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [notification, setNotification] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [searchedPerson, setSearchedPerson] = useState("");
+  const [foundPerson, setFoundPerson] = useState([]);
 
   useEffect(() => {
     listService
@@ -26,6 +29,14 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value);
   }
+
+  const handlePersonSearch = (event) => {
+    setSearchedPerson(event.target.value);
+    const personResult = persons.filter(person =>
+      person.name.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setFoundPerson(personResult);
+  };
 
   const Notification = ({ message }) => {
     if (message === null) {
@@ -123,6 +134,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Error message={errorMessage} />
       <Notification message={notification} />
+      <FilterModule handlePersonSearch={handlePersonSearch} searchedPerson={searchedPerson}/>
       <h2>add a new contact</h2>
       <PersonForm
         submit={submit}
@@ -132,7 +144,8 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} deletePerson={deletePerson} />
+      <Persons persons={persons} deletePerson={deletePerson} foundPerson={foundPerson}
+        searchedPerson={searchedPerson}/>
 
     </div>
   )
